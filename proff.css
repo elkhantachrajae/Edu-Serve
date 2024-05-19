@@ -1,0 +1,21 @@
+.announcement-block {
+    position: absolute;
+    top: 80px; /* Ajustez cette valeur selon la hauteur de votre barre de navigation verticale */
+    bottom: 0;
+    left: 100%; /* Centrer horizontalement */
+    width: 30%; /* Ajustez la largeur selon vos préférences */
+    height: 40%;
+    margin-left: -32%; /* Déplacez le bloc de moitié de sa largeur vers la gauche pour le centrer */
+    background-color: #d9dde7; /* Ajustez la couleur de fond selon vos préférences */
+    padding: 10px;
+    overflow-y: auto; /* Ajoutez un défilement vertical si nécessaire */
+    border-radius: 10px;
+ 
+}
+.announcement-block h3{
+    color: #0C359E;
+}
+.search-section{
+    float: left; margin-left: 250px;
+}
+

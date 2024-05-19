@@ -1,0 +1,74 @@
+/*verticalnavbar*/
+.vertical-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200px;
+  background-color: #0C359E; 
+  padding-top: 60px; /* Pour laisser de la place pour la barre horizontale */
+}
+
+.vertical-navbar img {
+  display: block;
+  margin: 10px 10px 20px 20px; /* Centrer l'image horizontalement */
+  width: 60%;
+}
+
+.vertical-navbar a, .vertical-navbar button {
+  display: block;
+  color: #fff;
+  padding: 10px 10px;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: 'Times New Roman', Times, sans-serif;
+}
+
+.vertical-navbar a:hover, .vertical-navbar button:hover {
+  background-color: white;
+  color:black; /* Changement de couleur au survol */
+}
+
+.vertical-navbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  
+}
+
+
+/*horizontalnavbar*/
+.horizontalnavbar {
+  background-color: #d9dde7;
+  margin-left: 200px; /* Définir la marge gauche pour que la barre horizontale commence après la barre verticale */
+}
+
+#navbarSupportedContent .nav-link {
+  color: black;
+  font-family: 'Times New Roman', Times, sans-serif;
+  font-size: 20px;
+  margin-right: 15px; 
+}
+
+
+
+/*drop down*/
+.dropdown-menu a:hover{
+  background-color: #0C359E;
+  color: white;
+
+}
+/*search bar */
+.form-inline{
+  padding-top: 10px;
+  padding-left:400px ;
+}
+.form-inline button{
+  color: #0C359E;
+  border-color: #0C359E;
+}
+.form-inline button:hover{
+  color:#0C359E;
+  background-color: white;
+  border-color: #0C359E;
+}
