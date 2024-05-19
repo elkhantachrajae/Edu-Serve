@@ -31,7 +31,7 @@ $modules = [
 ];
 
 $userClasses = [
-    ['user_id', 'class_id'],
+    ['user_id', 'class_id'] ,
     [1, 1],
     [2, 1],
     [3, 3],
