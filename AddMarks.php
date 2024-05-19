@@ -1,12 +1,20 @@
 &&<!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en">
+=======
+<html lang="en" >
+>>>>>>> 66f3b3a264587e01dadfc9344f21809ad6dc4055
 <head>
     <meta charset="UTF-8">
     <title>Choisir Classe et Module</title>
 </head>
 <body>
     <h1>Choisir Classe et Module</h1>
+<<<<<<< HEAD
     <form method="post" action="choisir_classe_module.php">
+=======
+    <form method="post" action="choisir_classe_module.php ">
+>>>>>>> 66f3b3a264587e01dadfc9344f21809ad6dc4055
         <label for="class">Classe:</label>
         <select name="class" id="class" required>
             <?php
