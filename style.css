@@ -1,0 +1,18 @@
+body{
+    background-color: #d9dde7;
+}
+::placeholder{
+    font-size: 16px;
+}
+@media only screen and (max-width:760px){
+    .box-area{
+        margin: 0 10px;
+    }
+    .left-box{
+        height: 100px;
+        overflow: hidden;
+    }
+    .right-box{
+        padding: 20px;
+    }
+}
