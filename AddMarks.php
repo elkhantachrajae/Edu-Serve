@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Choisir Classe et Module</h1>
-    <form method="post" action="choisir_classe_module.php">
+    <form method="post" action="saisirMarks.php">
         <label for="class">Classe:</label>
         <select name="class" id="class" required>
             <?php

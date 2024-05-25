@@ -1,57 +1,65 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $class_id = $_POST['class'];
-    $module_id = $_POST['module'];
+if (isset($_GET['class_id']) && isset($_GET['module_id'])) {
+    $class_id = $_GET['class_id'];
+    $module_id = $_GET['module_id'];
 
     // Connexion à la base de données
-    try {
-        $conn = new PDO("mysql:host=localhost;dbname=marks_management", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die("Erreur de connexion : " . $e->getMessage());
-    }
+    $conn = new PDO("mysql:host=localhost;dbname=marks_management", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Récupérer les étudiants de la classe sélectionnée avec leurs notes
+    // Récupérer le nom de la classe et du module
+    $stmt = $conn->prepare("SELECT name FROM classes WHERE id = ?");
+    $stmt->execute([$class_id]);
+    $class_name = $stmt->fetchColumn();
+
+    $stmt = $conn->prepare("SELECT name FROM modules WHERE id = ?");
+    $stmt->execute([$module_id]);
+    $module_name = $stmt->fetchColumn();
+
+    // Récupérer les étudiants avec leurs notes
     $stmt = $conn->prepare("
-        SELECT u.id, u.username, n.grade 
+        SELECT u.username, m.grade 
         FROM users u
-        JOIN UserClasses uc ON u.id = uc.user_id
-        LEFT JOIN notes n ON u.id = n.student_id AND n.module_id = ?
-        WHERE uc.class_id = ?
+        JOIN marks m ON u.id = m.user_id
+        WHERE m.module_id = ? AND u.id IN (
+            SELECT user_id FROM UserClasses WHERE class_id = ?
+        )
     ");
     $stmt->execute([$module_id, $class_id]);
-    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $marks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Entrer les Notes</title>
+        <title>Afficher les Notes</title>
     </head>
     <body>
-        <h2>Classe: <?php echo htmlspecialchars($class_id); ?>, Module: <?php echo htmlspecialchars($module_id); ?></h2>
-        <form method="post" action="enrigestrer_notes.php">
-            <table border="1">
-                <tr>
-                    <th>Étudiant</th>
-                    <th>Note</th>
-                </tr>
-                <?php
-                foreach ($students as $student) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($student['username']) . "</td>";
-                    echo "<td><input type='number' name='grades[" . $student['id'] . "]' value='" . htmlspecialchars($student['grade']) . "' step='0.01' min='0' max='20'></td>";
-                    echo "</tr>";
-                }
-                ?>
-            </table>
-            <input type="hidden" name="class_id" value="<?php echo htmlspecialchars($class_id); ?>">
-            <input type="hidden" name="module_id" value="<?php echo htmlspecialchars($module_id); ?>">
-            <input type="submit" value="Enregistrer les notes">
+        <h2>Classe: <?php echo htmlspecialchars($class_name); ?>, Module: <?php echo htmlspecialchars($module_name); ?></h2>
+        <table border="1">
+            <tr>
+                <th>Étudiant</th>
+                <th>Note</th>
+            </tr>
+            <?php
+            foreach ($marks as $mark) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($mark['username']) . "</td>";
+                echo "<td>" . htmlspecialchars($mark['grade']) . "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </table>
+        <form method="post" action="saisirMarks.php">
+            <input type="hidden" name="class" value="<?php echo htmlspecialchars($class_id); ?>">
+            <input type="hidden" name="module" value="<?php echo htmlspecialchars($module_id); ?>">
+            <input type="submit" value="Modifier">
         </form>
     </body>
     </html>
     <?php
+} else {
+    echo "Class ID ou Module ID manquant.";
 }
 ?>

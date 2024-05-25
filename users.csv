@@ -1,7 +1,9 @@
-id,username,password,role
-1,"Rajae El Khnatach",S110,student
-2,"lougmiri fatima zohra",S120,student
-3,"souhaila el meftahi",S130,student
-4,"fatima elouafi",S140,student
-5,"tati mohammed",S150,student
-6,"othman el hedrati",S160,student
+id,username,password,role,email
+1,"Rajae El Khnatach",S110,student,rajae.elkhantach@etu.uae.ac.ma
+2,"lougmiri fatima zohra",S120,student,fatimazahra.lougmiri@etu.uae.ac.ma
+3,"souhaila el meftahi",S130,student,souhaila.elmeftahi@etu.uae.ac.ma
+4,"fatima elouafi",S140,student,fatima.elouafi@etu.uae.ac.ma
+5,"tati mohammed",S150,student,mohammed.tati@etu.uae.ac.ma
+6,"othman el hedrati",S160,student,othman.elhdrati@etu.uae.ac.ma
+7,"El wardani dadi",S170,professor,dadi.elwardani@uae.ac.ma
+8,"Rafi zakani fatima",S180,professor,fatima.rafizakani@uae.ac.ma

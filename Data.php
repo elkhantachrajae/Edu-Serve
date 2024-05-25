@@ -1,13 +1,15 @@
 <?php
 // Data arrays (example data)
 $users = [
-    ['id', 'username', 'password', 'role'],
-    [1, 'Rajae El Khnatach', 'S110', 'student'],
-    [2, 'lougmiri fatima zohra', 'S120', 'student'],
-    [3, 'souhaila el meftahi', 'S130', 'student'],
-    [4, 'fatima elouafi', 'S140', 'student'],
-    [5, 'tati mohammed', 'S150', 'student'],
-    [6, 'othman el hedrati', 'S160', 'student']
+    ['id', 'username', 'password', 'role', 'email'],
+    [1, 'Rajae El Khnatach', 'S110', 'student', 'rajae.elkhantach@etu.uae.ac.ma'],
+    [2, 'lougmiri fatima zohra', 'S120', 'student', 'fatimazahra.lougmiri@etu.uae.ac.ma'],
+    [3, 'souhaila el meftahi', 'S130', 'student', 'souhaila.elmeftahi@etu.uae.ac.ma'],
+    [4, 'fatima elouafi', 'S140', 'student', 'fatima.elouafi@etu.uae.ac.ma'],
+    [5, 'tati mohammed', 'S150', 'student', 'mohammed.tati@etu.uae.ac.ma'],
+    [6, 'othman el hedrati', 'S160', 'student', 'othman.elhdrati@etu.uae.ac.ma'],
+    [7, 'El wardani dadi', 'S170', 'professor', 'dadi.elwardani@uae.ac.ma'],
+    [8, 'Rafi zakani fatima', 'S180', 'professor', 'fatima.rafizakani@uae.ac.ma']
 ];
 
 $classes = [
@@ -21,17 +23,17 @@ $classes = [
 ];
 
 $modules = [
-    ['id', 'name', 'class_id'],
-    [1, 'Machine Learning', 2],
-    [2, 'Cpp', 1],
-    [3, 'Python', 4],
-    [4, 'Recherche opérationnelle', 5],
-    [5, 'Reseaux', 3],
-    [6, 'Base de données', 6]
+    ['id', 'name', 'class_id','prof_id'],
+    [1, 'Machine Learning', 2,7],
+    [2, 'Cpp', 1,7],
+    [3, 'Python', 4,8],
+    [4, 'Recherche opérationnelle', 5,8],
+    [5, 'Reseaux', 3,7],
+    [6, 'Base de données', 6,8]
 ];
 
 $userClasses = [
-    ['user_id', 'class_id'] ,
+    ['user_id', 'class_id'],
     [1, 1],
     [2, 1],
     [3, 3],
@@ -72,6 +74,11 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Function to truncate a table
+    function truncateTable($conn, $table) {
+        $conn->exec("TRUNCATE TABLE $table");
+    }
+
     // Function to import CSV data into a table
     function importCsvToTable($conn, $filePath, $table, $columns) {
         if (($handle = fopen($filePath, "r")) !== false) {
@@ -98,11 +105,23 @@ try {
         }
     }
 
+    // Disable foreign key checks
+    $conn->exec("SET FOREIGN_KEY_CHECKS = 0");
+
+    // Truncate tables
+    truncateTable($conn, 'userClasses');
+    truncateTable($conn, 'modules');
+    truncateTable($conn, 'classes');
+    truncateTable($conn, 'users');
+
+    // Re-enable foreign key checks
+    $conn->exec("SET FOREIGN_KEY_CHECKS = 1");
+
     // Import data into the tables
-    importCsvToTable($conn, $csvFilePathUsers, 'users', ['id', 'username', 'password', 'role']);
+    importCsvToTable($conn, $csvFilePathUsers, 'users', ['id', 'username', 'password', 'role', 'email']);
     importCsvToTable($conn, $csvFilePathClasses, 'classes', ['id', 'name']);
-    importCsvToTable($conn, $csvFilePathModules, 'modules', ['id', 'name', 'class_id']);
-    importCsvToTable($conn, $csvFilePathUserClasses, 'UserClasses', ['user_id', 'class_id']);
+    importCsvToTable($conn, $csvFilePathModules, 'modules', ['id', 'name', 'class_id','prof_id']);
+    importCsvToTable($conn, $csvFilePathUserClasses, 'userClasses', ['user_id', 'class_id']);
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
