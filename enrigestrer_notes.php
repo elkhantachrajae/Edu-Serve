@@ -14,42 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Préparation de la requête d'insertion ou de mise à jour des notes
-    $sql = "INSERT INTO marks (user_id, module_id, grade) VALUES (?, ?, ?)
-            ON DUPLICATE KEY UPDATE grade = VALUES(grade)";
+    $sql = "INSERT INTO marks (user_id, module_id, grade, validated) VALUES (?, ?, ?, 0)
+            ON DUPLICATE KEY UPDATE grade = VALUES(grade), validated = 0";
     $stmt = $conn->prepare($sql);
 
     // Parcourir les notes soumises et les insérer ou les mettre à jour
     foreach ($grades as $user_id => $grade) {
         $stmt->execute([$user_id, $module_id, $grade]);
-    }
-
-    // Récupérer le nom du module
-    $stmt = $conn->prepare("SELECT name FROM modules WHERE id = ?");
-    $stmt->execute([$module_id]);
-    $module_name = $stmt->fetchColumn();
-
-    // Récupérer le nom du professeur
-    $stmt = $conn->prepare("SELECT username FROM users WHERE id = ?");
-    $stmt->execute([$professor_id]);
-    $professor_name = $stmt->fetchColumn();
-
-    // Récupérer les adresses email des étudiants de la classe concernée
-    $stmt = $conn->prepare("
-        SELECT u.email
-        FROM users u
-        JOIN UserClasses uc ON u.id = uc.user_id
-        WHERE uc.class_id = ?
-    ");
-    $stmt->execute([$class_id]);
-    $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-
-    // Composer le message
-    $subject = "Mise à jour des notes pour le module: $module_name";
-    $message = "Cher étudiant,\n\nLes notes pour le module '$module_name' ont été mises à jour par le professeur $professor_name. Veuillez consulter votre espace étudiant pour plus de détails.\n\nCordialement,\nL'équipe pédagogique";
-
-    // Envoyer un email à chaque étudiant
-    foreach ($emails as $email) {
-        mail($email, $subject, $message);
     }
 
     // Rediriger vers la page d'affichage des notes

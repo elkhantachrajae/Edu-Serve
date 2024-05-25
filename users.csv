@@ -5,5 +5,5 @@ id,username,password,role,email
 4,"fatima elouafi",S140,student,fatima.elouafi@etu.uae.ac.ma
 5,"tati mohammed",S150,student,mohammed.tati@etu.uae.ac.ma
 6,"othman el hedrati",S160,student,othman.elhdrati@etu.uae.ac.ma
-7,"El wardani dadi",S170,professor,dadi.elwardani@uae.ac.ma
+7,"El wardani dadi",S170,coordinator,dadi.elwardani@uae.ac.ma
 8,"Rafi zakani fatima",S180,professor,fatima.rafizakani@uae.ac.ma

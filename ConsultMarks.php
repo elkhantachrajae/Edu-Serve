@@ -27,12 +27,12 @@ if (!$user) {
 $user_id = $user['id'];
 $username = $user['username'];
 
-// Récupérer les notes et les matières
+// Récupérer les notes et les matières validées par le coordinateur
 $stmt = $conn->prepare("
     SELECT m.name AS module_name, ma.grade
     FROM modules m
     JOIN marks ma ON m.id = ma.module_id
-    WHERE ma.user_id = ?
+    WHERE ma.user_id = ? AND ma.validated = 1
 ");
 $stmt->execute([$user_id]);
 $marks = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -18,38 +18,26 @@ if (isset($_POST['button'])) {
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $stmt = $con->prepare("SELECT role FROM users WHERE email = ? AND password = ?");
+        $stmt = $con->prepare("SELECT id, role FROM users WHERE email = ? AND password = ?");
         $stmt->bind_param("ss", $email, $password);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt->bind_result($role);
+            $stmt->bind_result($user_id, $role);
             $stmt->fetch();
-            $user_type = $role;
-
-            // Enregistrer l'email dans la session
+            $_SESSION['user_id'] = $user_id;
             $_SESSION['email'] = $email;
+            $_SESSION['role'] = $role;
 
-            if ($user_type === 'student') {
+            if ($role === 'student') {
                 header("Location: student.php");
-            } elseif ($user_type === 'professor') {
-                // Récupérer l'ID du professeur
-                $stmt_prof = $con->prepare("SELECT id FROM users WHERE email = ?");
-                $stmt_prof->bind_param("s", $email);
-                $stmt_prof->execute();
-                $stmt_prof->bind_result($user_id);
-                $stmt_prof->fetch();
-
-                // Enregistrer l'ID du professeur dans la session
-                $_SESSION['user_id'] = $user_id;
-                // Fermer la connexion mysqli
-                mysqli_close($con);
-
-                // Rediriger vers la page du professeur
+            } elseif ($role === 'professor') {
                 header("Location: prof.php");
-                exit();
+            } elseif ($role === 'coordinator') {
+                header("Location: coord.php");
             }
+            exit();
         } else {
             $erreur = "Adresse email ou mot de passe invalide!";
         }
